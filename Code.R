@@ -51,3 +51,4 @@ ggplot(condition_counts, aes(x = AgeGroup, y = Count, fill = Medical.Condition))
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 View(data)
+head(data)
