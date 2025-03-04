@@ -22,6 +22,18 @@ data_clean$Name <- str_to_title(str_to_lower(data_clean$Name))
 library(dplyr)
 # Remove duplicate rows
 data_clean <- distinct(data_clean)
+# Clean the Hospital column in the existing data frame
+data_clean$Hospital <- data_clean$Hospital %>%
+  # Remove "and" (case insensitive) from the hospital names
+  gsub("\\band\\b", "", .) %>%
+  # Convert to proper title case
+  tools::toTitleCase(.) %>%
+  # Trim leading/trailing spaces
+  trimws() %>%
+  # Replace multiple spaces with a single space
+  gsub("\\s+", " ", .)
+print(data_clean$Hospital)
+data_clean$billing.amount.rounded <- round(data_clean$Billing.Amount, 2)
 # Convert 'Age' to numeric
 data_clean$Age <- as.numeric(data_clean$Age)
 # Filter out unrealistic ages
@@ -50,5 +62,7 @@ ggplot(condition_counts, aes(x = AgeGroup, y = Count, fill = Medical.Condition))
        y = "Number of Cases") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-View(data)
-head(data)
+View(data_clean)
+head(data_clean)
+
+
